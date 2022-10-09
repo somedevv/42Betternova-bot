@@ -1,0 +1,7 @@
+.DS_Store
+.vscode/
+.dccache
+.env
+.env.template
+.environment/
+__pycache__/
