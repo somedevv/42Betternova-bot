@@ -10,7 +10,7 @@ class WelcomeMessages:
             '- 🗑️ You will be able to delete all your information at any time\n' +
         'Do you agree to these terms?'
         )
-    WELCOME_LOGGED_IN = 'Welcome back {}! 👋🏻'
+    WELCOME_LOGGED_IN = 'Welcome back <b>{}</b>! 👋🏻'
     TERMS_STATUS_NOT_AGREED = 'Terms status: Not Accepted ❌'
     TERMS_STATUS_AGREED = 'Terms status: Accepted ✅'
     TERMS_AGRREE = 'Agree to the terms ✅'
@@ -19,11 +19,11 @@ class ErrorMessages:
     UNDEFINED_ERROR = 'Ups something went wrong, please try again later'
     USER_NOT_FOUND = 'You don\'t seem to be logged in, please use /start to login and use the bot'
     RESPONSE_ERROR = 'Error: response {}'
-    CYCLE_ERROR = 'Hi {}, there was an error getting your cycle 😔, please try again later'
+    CYCLE_ERROR = 'Hi <b>{}</b>, there was an error getting your cycle 😔, please try again later'
 
 class LoginMessages:
     LOGIN_MESSAGE = 'Please, login using the following link:\n{}&redirect_uri={}/api/auth/intra42?id={}&response_type=code\nThen click the button below'
-    LOGIN_CONFIRMED = 'Login confirmed ✅ Welcome {}! 👋🏻\nYou can now use the bot'
+    LOGIN_CONFIRMED = 'Login confirmed ✅ Welcome <b>{}</b>! 👋🏻\nYou can now use the bot'
     LOGIN_FAILED = 'Login failed ❌\nPlease try again'
 
 class HelpMessages:
@@ -37,14 +37,14 @@ class HelpMessages:
 class DeleteMessages:
     DELETE_SUCCESS = 'All your information has been deleted ✅'
     DELETE_FAILED = 'Ups something went wrong, please try again later'
-    DELETE_CONFIRMATION = 'Hi {}, are you sure you want to delete all your information? This action cannot be undone'
+    DELETE_CONFIRMATION = 'Hi <b>{}</b>, are you sure you want to delete all your information? This action cannot be undone'
     CONFIRM_DELETE = 'Confirm delete 🗑️'
 
 class CycleMessages:
-    CYCLE_MESSAGE = ('Hi {}, your current cycle stats are:\n' +
-        'Logged in time: {} Hours {} Minutes {} Seconds\n' +
-        'Events: {}\n' +
-        'Evaluations: {}\n'
+    CYCLE_MESSAGE = ('Hi <b>{}</b>, your current cycle stats are:\n\n' +
+        '<b>Logged:</b>\n{} Hours {} Minutes {} Seconds\n\n' +
+        '<b>Events:</b>\n{}\n\n' +
+        '<b>Evaluations:</b>\n{}\n'
         )
     FETCHING_CYCLE = '🕑 Fetching your cycle stats...'
     

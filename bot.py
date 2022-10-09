@@ -1,4 +1,4 @@
-import telebot, os, requests
+import telebot, os, requests, logging
 from Classes.messages import *
 from Logic.delete import *
 from Logic.login import *
@@ -35,9 +35,10 @@ def query_handler(call):
 
 @bot.message_handler(commands=['start'])
 def start(message):
+    logging.info('User {} started the bot'.format(message.from_user.id))
     res, user_42_login = get_user(message.chat.id)
     if res == 200 and user_42_login is not None:
-        bot.send_message(message.chat.id, WelcomeMessages.WELCOME_LOGGED_IN.format(user_42_login))
+        bot.send_message(message.chat.id, WelcomeMessages.WELCOME_LOGGED_IN.format(user_42_login), parse_mode='HTML')
     elif res == 404 or (res==200 and user_42_login is None):
         bot.send_message(message.chat.id, WelcomeMessages.WELCOME_NOT_LOGGED_IN)
         markup = telebot.types.InlineKeyboardMarkup()
@@ -48,15 +49,17 @@ def start(message):
 
 @bot.message_handler(commands=['help'])
 def help(message):
+    logging.info('User {} requested help'.format(message.from_user.id))
     bot.send_message(message.chat.id, HelpMessages.HELP_MESSAGE)
 
 @bot.message_handler(commands=['delete'])
 def delete(message):
+    logging.info('User {} requested delete'.format(message.from_user.id))
     res, user_42_login = get_user(message.chat.id)
     if res == 200 and user_42_login is not None:
         markup = telebot.types.InlineKeyboardMarkup()
         markup.add(telebot.types.InlineKeyboardButton(text=DeleteMessages.CONFIRM_DELETE, callback_data='CONFIRM_DELETE'))
-        bot.send_message(message.chat.id, DeleteMessages.DELETE_CONFIRMATION.format(user_42_login), reply_markup=markup)
+        bot.send_message(message.chat.id, DeleteMessages.DELETE_CONFIRMATION.format(user_42_login), reply_markup=markup, parse_mode='HTML')
     elif res == 404 or (res==200 and user_42_login is None):
         bot.send_message(message.chat.id, ErrorMessages.USER_NOT_FOUND)
     else:
@@ -64,6 +67,7 @@ def delete(message):
 
 @bot.message_handler(commands=['cycle'])
 def cycle(message):
+    logging.info('User {} requested cycle'.format(message.from_user.id))
     msg = bot.send_message(message.chat.id, CycleMessages.FETCHING_CYCLE)
     res, user_42_login = get_user(message.chat.id)
     if res == 200 and user_42_login is not None:
@@ -79,16 +83,16 @@ def cycle(message):
             # EVALUATIONS
             evaluations = response.json()['cycle']['evaluations']
 
-            bot.edit_message_text(CycleMessages.CYCLE_MESSAGE.format(user_42_login, hh, mm, ss, events, evaluations), message_id=msg.message_id, chat_id=msg.chat.id)
+            bot.edit_message_text(CycleMessages.CYCLE_MESSAGE.format(user_42_login, hh, mm, ss, events, evaluations), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
         else:
-            bot.edit_message_text(ErrorMessages.CYCLE_ERROR.format(user_42_login), message_id=msg.message_id, chat_id=msg.chat.id)
+            bot.edit_message_text(ErrorMessages.CYCLE_ERROR.format(user_42_login), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
     elif res == 404 or (res==200 and user_42_login is None):
         bot.send_message(message.chat.id, ErrorMessages.USER_NOT_FOUND)
     else:
         fail(message, ErrorMessages.RESPONSE_ERROR.format(res))
 
 def fail(message, e):
+    logging.error(e)
     bot.send_message(message.chat.id, ErrorMessages.UNDEFINED_ERROR)
-    print(e)
 
 bot.polling()

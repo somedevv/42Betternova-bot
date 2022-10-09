@@ -14,6 +14,6 @@ def login(message, bot):
 def confirm_login(message, bot):
     res, user_42_login = get_user(message.chat.id)
     if res == 200 and user_42_login is not None:
-        bot.edit_message_text(LoginMessages.LOGIN_CONFIRMED.format(user_42_login), chat_id=message.chat.id, message_id=message.id)
+        bot.edit_message_text(LoginMessages.LOGIN_CONFIRMED.format(user_42_login), chat_id=message.chat.id, message_id=message.id, parse_mode='HTML')
     else:
         bot.send_message(message.chat.id, LoginMessages.LOGIN_FAILED)
