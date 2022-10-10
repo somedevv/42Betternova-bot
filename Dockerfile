@@ -9,4 +9,4 @@ RUN pip install -r requirements.txt
 COPY . .
 
 # Run the bot
-CMD ["python", "bot.py"]
+CMD ["python", "-u", "bot.py"]

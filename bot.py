@@ -1,4 +1,4 @@
-import telebot, os, requests, logging
+import telebot, os, requests, logging, sys
 from Classes.messages import *
 from Logic.delete import *
 from Logic.login import *
@@ -8,6 +8,15 @@ from Logic.checks import *
 
 token = os.environ['TELEGRAM_TOKEN']
 bot = telebot.TeleBot(token)
+
+root = logging.getLogger()
+root.setLevel(logging.DEBUG)
+
+handler = logging.StreamHandler(sys.stdout)
+handler.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+handler.setFormatter(formatter)
+root.addHandler(handler)
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_handler(call):
