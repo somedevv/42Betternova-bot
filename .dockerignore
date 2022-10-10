@@ -1,8 +1,7 @@
 .DS_Store
 .vscode/
 .dccache
-.env
-.env.template
+.env*
 .environment/
 __pycache__/
 .github/
