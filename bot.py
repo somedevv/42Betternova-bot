@@ -38,8 +38,10 @@ class SimpleMiddleware(BaseMiddleware):
         self.update_types = ['message']
 
     def pre_process(self, message, data):
-        if message.from_user.id not in self.last_time or message.text in no_timeout_funcs or message.from_user.id in no_timeout_users:
+        if not message.from_user.id in self.last_time:
             self.last_time[message.from_user.id] = message.date
+            return
+        if message.text in no_timeout_funcs or message.from_user.id in no_timeout_users:
             return
         if message.date - self.last_time[message.from_user.id] < self.limit:
             bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
