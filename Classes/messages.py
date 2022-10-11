@@ -1,3 +1,6 @@
+from http.client import TOO_MANY_REQUESTS
+
+
 class WelcomeMessages:
     WELCOME_NOT_LOGGED_IN = (
         'Welcome to the 42 Betternova Telegram bot,' +
@@ -20,6 +23,10 @@ class ErrorMessages:
     USER_NOT_FOUND = 'You don\'t seem to be logged in, please use /start to login and use the bot'
     RESPONSE_ERROR = 'Error: response {}'
     CYCLE_ERROR = 'Hi <b>{}</b>, there was an error getting your cycle 😔, please try again later'
+    TOO_MANY_REQUESTS = (
+        'Easy tiger! To keep costs low, and for 42API reasons, fetching is limited to 1 request per 5 minutes.\n' +
+        'Please <b>wait {} minutes and {} seconds</b> before sending a request again ❤️.'
+    )
 
 class LoginMessages:
     LOGIN_MESSAGE = 'Please, login using the following link:\n{}&redirect_uri={}/api/auth/intra42?id={}&response_type=code\nThen click the button below'

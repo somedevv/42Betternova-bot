@@ -1,22 +1,56 @@
 import telebot, os, requests, logging, sys
+from telebot.handler_backends import BaseMiddleware, CancelUpdate
 from Classes.messages import *
 from Logic.delete import *
 from Logic.login import *
 from Logic.checks import *
+
+####### ONLY FOR TESTING AND DEVELOPMENT #######
 # from dotenv import load_dotenv
 # load_dotenv()
+################################################
 
+####### SETUP TELEGRAM BOT #######
 token = os.environ['TELEGRAM_TOKEN']
-bot = telebot.TeleBot(token)
+bot = telebot.TeleBot(token, use_class_middlewares=True)
+##################################
 
+####### ACTIVATE AND CONFIGURE LOGGING #######
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
-
 handler = logging.StreamHandler(sys.stdout)
 handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 root.addHandler(handler)
+###############################################
+
+####### MIDDLEWARE TOO MANY REQUEST EXCLUSION #######
+no_timeout_funcs = os.environ['BYPASS_TIMEOUT_FUNCTIONS'].split(',') # list of functions that should not be affected by the timeout separated by comma
+no_timeout_users = [eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',')] # list of users that should not be affected by the timeout separated by comma
+#####################################################
+
+####### MIDDLEWARES CONFIG #######
+class SimpleMiddleware(BaseMiddleware):
+    def __init__(self, limit) -> None:
+        self.last_time = {}
+        self.limit = limit
+        self.update_types = ['message']
+
+    def pre_process(self, message, data):
+        if message.from_user.id not in self.last_time or message.text in no_timeout_funcs or message.from_user.id in no_timeout_users:
+            self.last_time[message.from_user.id] = message.date
+            return
+        if message.date - self.last_time[message.from_user.id] < self.limit:
+            bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
+            return CancelUpdate()
+        self.last_time[message.from_user.id] = message.date
+
+    def post_process(self, message, data, exception):
+        pass
+
+bot.setup_middleware(SimpleMiddleware(300))
+#######################################
 
 @bot.callback_query_handler(func=lambda call: True)
 def query_handler(call):
