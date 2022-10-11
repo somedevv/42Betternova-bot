@@ -41,10 +41,15 @@ class DeleteMessages:
     CONFIRM_DELETE = 'Confirm delete 🗑️'
 
 class CycleMessages:
-    CYCLE_MESSAGE = ('Hi <b>{}</b>, your current cycle stats are:\n\n' +
-        '<b>Logged:</b>\n{} Hours {} Minutes {} Seconds\n\n' +
-        '<b>Events:</b>\n{}\n\n' +
-        '<b>Evaluations:</b>\n{}\n'
+    CYCLE_MESSAGE = (
+        'Hi <b>{}</b>,\n' +
+        'your current cycle stats are:\n\n' +
+        'Logged Time:\n' +
+        '<b>{}h {}m {}s</b> of 12h\n\n' +
+        'Events:\n' +
+        '<b>{}</b> of 2\n\n' +
+        'Evaluations:\n' +
+        '<b>{}</b> of 2\n'
         )
     FETCHING_CYCLE = '🕑 Fetching your cycle stats...'
     
