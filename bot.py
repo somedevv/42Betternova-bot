@@ -1,4 +1,4 @@
-import telebot, os, requests, logging, sys
+import telebot, os, requests, logging, sys, datetime
 from telebot.handler_backends import BaseMiddleware, CancelUpdate
 from Classes.messages import *
 from Logic.delete import *
@@ -125,15 +125,17 @@ def cycle(message):
             events = response.json()['cycle']['events']
             # EVALUATIONS
             evaluations = response.json()['cycle']['evaluations']
-
-            bot.edit_message_text(CycleMessages.CYCLE_MESSAGE.format(user_42_login, hh, mm, ss, events, evaluations), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
+            end_date = datetime.datetime.strptime("{}T{}".format(response.json()['cycle']['end_date'],"9:0:0.000Z"), '%Y-%m-%dT%H:%M:%S.%fZ')
+            now = datetime.datetime.now()
+            delta = end_date - now
+            cycle_days, cycle_hours, cycle_minutes = delta.days, delta.seconds // 3600, delta.seconds // 60 % 60
+            bot.edit_message_text(CycleMessages.CYCLE_MESSAGE.format(user_42_login, hh, mm, ss, events, evaluations, cycle_days, cycle_hours, cycle_minutes), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
         else:
             bot.edit_message_text(ErrorMessages.CYCLE_ERROR.format(user_42_login), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
     elif res == 404 or (res==200 and user_42_login is None):
         bot.send_message(message.chat.id, ErrorMessages.USER_NOT_FOUND)
     else:
         fail(message, ErrorMessages.RESPONSE_ERROR.format(res))
-
 
 def fail(message, e):
     logging.error(e)
