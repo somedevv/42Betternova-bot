@@ -27,7 +27,7 @@ root.addHandler(handler)
 
 ####### MIDDLEWARE TOO MANY REQUEST EXCLUSION #######
 no_timeout_funcs = os.environ['BYPASS_TIMEOUT_FUNCTIONS'].split(',') # list of functions that should not be affected by the timeout separated by comma
-no_timeout_users = [eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',')] # list of users that should not be affected by the timeout separated by comma
+no_timeout_users = [ eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',') ] # list of users that should not be affected by the timeout separated by comma
 #####################################################
 
 ####### MIDDLEWARES CONFIG #######
@@ -41,9 +41,7 @@ class SimpleMiddleware(BaseMiddleware):
         if not message.from_user.id in self.last_time:
             self.last_time[message.from_user.id] = message.date
             return
-        if message.text in no_timeout_funcs or message.from_user.id in no_timeout_users:
-            return
-        if message.date - self.last_time[message.from_user.id] < self.limit:
+        if message.date - self.last_time[message.from_user.id] < self.limit and (message.text not in no_timeout_funcs and message.from_user.id not in no_timeout_users):
             bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
             return CancelUpdate()
         self.last_time[message.from_user.id] = message.date
@@ -135,6 +133,7 @@ def cycle(message):
         bot.send_message(message.chat.id, ErrorMessages.USER_NOT_FOUND)
     else:
         fail(message, ErrorMessages.RESPONSE_ERROR.format(res))
+
 
 def fail(message, e):
     logging.error(e)
