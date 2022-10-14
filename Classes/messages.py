@@ -57,7 +57,7 @@ class CycleMessages:
         '<b>{}</b> of 2\n\n' +
         'Evaluations:\n' +
         '<b>{}</b> of 2\n\n' +
-        'Time left for current cycle:\n:' +
+        'Time left for current cycle:\n' +
         '<b>{}</b> Days <b>{}</b> Hours <b>{}</b> Minutes'
         )
     FETCHING_CYCLE = '🕑 Fetching your cycle stats...'
