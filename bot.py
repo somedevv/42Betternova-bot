@@ -1,3 +1,4 @@
+from async_timeout import timeout
 import telebot, os, requests, logging, sys, datetime
 from telebot.handler_backends import BaseMiddleware, CancelUpdate
 from Classes.messages import *
@@ -26,7 +27,7 @@ root.addHandler(handler)
 ###############################################
 
 ####### MIDDLEWARE TOO MANY REQUEST EXCLUSION #######
-no_timeout_funcs = os.environ['BYPASS_TIMEOUT_FUNCTIONS'].split(',') # list of functions that should not be affected by the timeout separated by comma
+timeout_funcs = os.environ['TIMEOUT_FUNCTIONS'].split(',') # list of functions that should not be affected by the timeout separated by comma
 no_timeout_users = [ eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',') ] # list of users that should not be affected by the timeout separated by comma
 #####################################################
 
@@ -41,7 +42,7 @@ class SimpleMiddleware(BaseMiddleware):
         if not message.from_user.id in self.last_time:
             self.last_time[message.from_user.id] = message.date
             return
-        if message.date - self.last_time[message.from_user.id] < self.limit and (message.text not in no_timeout_funcs and message.from_user.id not in no_timeout_users):
+        if message.date - self.last_time[message.from_user.id] < self.limit and (message.text in timeout_funcs and message.from_user.id not in no_timeout_users):
             bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
             return CancelUpdate()
         self.last_time[message.from_user.id] = message.date
