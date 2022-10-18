@@ -24,7 +24,7 @@ class ErrorMessages:
     RESPONSE_ERROR = 'Error: response {}'
     CYCLE_ERROR = 'Hi <b>{}</b>, there was an error getting your cycle 😔, please try again later'
     TOO_MANY_REQUESTS = (
-        'Easy tiger! To keep costs low, and for 42API reasons, fetching is limited to 1 request per 5 minutes.\n' +
+        'To keep costs low, and for 42API reasons, fetching is limited to 1 request per 5 minutes.\n' +
         'Please <b>wait {} minutes and {} seconds</b> before sending a request again ❤️.'
     )
 
