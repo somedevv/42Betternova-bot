@@ -1,4 +1,3 @@
-from async_timeout import timeout
 import telebot, os, requests, logging, sys, datetime
 from telebot.handler_backends import BaseMiddleware, CancelUpdate
 from Classes.messages import *
