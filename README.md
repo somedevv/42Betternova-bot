@@ -9,7 +9,7 @@ A Telegram Bot, written in Python 3.10, to check on your 42 White Nova cycle sta
 
 ### Commands
 ```
-/start - Start the bot, it will ask you to accept some terms and conditions and will send you a link so you can login
+/start - Start the bot, it will ask you to accept some terms and conditions and will send you a link so you can log in
 /help - List the commands and what they do
 /cycle - Get your current cycle stats
 /delete - Delete your user and all your data from the DB, it will ask for confirmation
