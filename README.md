@@ -1,5 +1,5 @@
 # 42Betternova-bot
-A Telegram Bot, written in Python, to check on your 42 White Nova cycle statistics, so you can be a pro Whitenover in style.
+A Telegram Bot, written in Python 3.10, to check on your 42 White Nova cycle statistics, so you can be a pro Whitenover in style.
 
 ## How to be a pro Whitenover
 
@@ -70,4 +70,51 @@ For the cycle stats, the bot fetches it as a JSON with the following structure a
   }
 }
 
+```
+
+## The Telegram API Middleware
+This bots implements a Simple Middleware to manage message requests. It can be found in the [bot.py](https://github.com/somedevv/42Betternova-bot/blob/main/bot.py) file.
+
+``` Python 3.10
+####### MIDDLEWARES CONFIG #######
+class SimpleMiddleware(BaseMiddleware):
+    def __init__(self, limit) -> None:
+        self.last_time = {}
+        self.limit = limit
+        self.update_types = ['message']
+
+    def pre_process(self, message, data):
+        if message.text in timeout_funcs and message.from_user.id not in no_timeout_users:
+            if message.from_user.id in self.last_time and message.date - self.last_time[message.from_user.id] < self.limit:
+                bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
+                return CancelUpdate()
+            self.last_time[message.from_user.id] = message.date
+
+    def post_process(self, message, data, exception):
+        pass
+
+bot.setup_middleware(SimpleMiddleware(300))
+#######################################
+```
+
+Here you can change and modify how the Middleware acts in the pre and post process of a message.
+
+### Timeouts to avoid request flooding
+To avoid flooding of certain commands, I implemented a timeout if there is a request in X minutes after the last request.
+
+``` Python 3.10
+def pre_process(self, message, data):
+        if message.text in timeout_funcs and message.from_user.id not in no_timeout_users:
+            if message.from_user.id in self.last_time and message.date - self.last_time[message.from_user.id] < self.limit:
+                bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
+                return CancelUpdate()
+            self.last_time[message.from_user.id] = message.date
+```
+
+Only the functions defined on the **TIMEOUT_FUNCTIONS** env varible will be afected by this limit. Also, all the users in **BYPASS_TIMEOUT_USERS** will bypass this timeout, so they will be ignored.
+
+The time limit between calls can be defined in seconds as a parameter in ```bot.setup_middleware(SimpleMiddleware()))```:
+
+``` Python 3.10
+bot.setup_middleware(SimpleMiddleware(300)) # 300 Seconds = 5 minutes
 ```
