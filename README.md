@@ -32,17 +32,22 @@ Meanwhile, the Telegram bot is imaged as a Docker Image, using Github Actions th
 ### How you can do it
 Here you have infinite options, you can do it the same way as I do, or you can host everything on your own. The important part is that you create an API that follows the data structure the bot works with (Refeer to 'The data').
 
-To deploy the bot, you only need to build the docker image by running this on the root of the project:
+To deploy the bot you can:
+- Build the docker image by running this on the root of the project:
 
-``` docker build -t 42betternova-bot . ```
+  ``` docker build -t 42betternova-bot . ```
+
+- Pull it from Docker:
+
+  ``` docker pull somedevv/42betternova-bot:latest ```
 
 Then deploy the bot with the following **container ENV variables**:
 ```
-// The API token set as Bearer to authenticate with your API
+// The token set as Authentication Bearer to authenticate with your API
 API_TOKEN=
 
 // The base URL of your API
-API_BASE_URL=https://myapi.com/
+API_BASE_URL=https://something.com/api/
 
 // The Telegram Token for the bot
 TELEGRAM_TOKEN=
