@@ -1,5 +1,5 @@
 # 42Betternova-bot
-A Telegram Bot, written in Python 3.10, to check on your 42 White Nova cycle statistics, so you can be a pro Whitenover in style.
+A Telegram Bot, written in ```Python 3.10```, to check on your 42 White Nova cycle statistics, so you can be a pro Whitenover in style.
 
 :warning: **This bot needs and API to work** and is not included, read ```Deploy it on your own``` for more details 🙂
 
