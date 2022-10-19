@@ -7,6 +7,14 @@ A Telegram Bot, written in Python 3.10, to check on your 42 White Nova cycle sta
 2. Start chatting with [@Betternova42_bot](https://t.me/Betternova42_bot)
 3. Done
 
+### Commands
+```
+/start - Start the bot, it will ask you to accept some terms and conditions if you haven't logged in
+/help - List the commands and what they do
+/cycle - Get your current cycle stats
+/delete - Delete your user and all your data from the DB, it will ask for confirmation
+```
+
 ## Deploy it on your own
 Because it's **free** and **fun** (kind off)
 
