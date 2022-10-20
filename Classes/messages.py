@@ -1,7 +1,3 @@
-from http.client import TOO_MANY_REQUESTS
-from sre_constants import SUCCESS
-
-
 class WelcomeMessages:
     WELCOME_NOT_LOGGED_IN = (
         'Welcome to the 42 Betternova Telegram bot,' +
