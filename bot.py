@@ -72,19 +72,19 @@ def query_handler(call):
         try:
             res, user_42_login = get_user(call.message.chat.id)
             if res == 200 and user_42_login is not None:
-                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.CONFIRMED), chat_id=call.call.message.chat.id, message_id=call.message.id)
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.CONFIRMED), chat_id=call.message.chat.id, message_id=call.message.id)
                 confirm_delete(call.message, bot, user_42_login)
             elif res == 404 or (res==200 and user_42_login is None):
-                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.ERROR), chat_id=call.call.message.chat.id, message_id=call.message.id)
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.ERROR), chat_id=call.message.chat.id, message_id=call.message.id)
         except Exception as e:
             fail(call.message, e)
     if call.data == 'CANCEL_DELETE':
         try:
             res, user_42_login = get_user(call.message.chat.id)
             if res == 200 and user_42_login is not None:
-                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.CANCELED), chat_id=call.call.message.chat.id, message_id=call.message.id)
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.CANCELED), chat_id=call.message.chat.id, message_id=call.message.id)
             elif res == 404 or (res==200 and user_42_login is None):
-                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.ERROR), chat_id=call.call.message.chat.id, message_id=call.message.id)
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.ERROR), chat_id=call.message.chat.id, message_id=call.message.id)
         except Exception as e:
             fail(call.message, e)
 
