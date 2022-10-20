@@ -138,7 +138,7 @@ def cycle(message):
             events = response.json()['cycle']['events']
             # EVALUATIONS
             evaluations = response.json()['cycle']['evaluations']
-            end_date = datetime.datetime.strptime("{}T{}".format(response.json()['cycle']['end_date'],"9:0:0.000Z"), '%Y-%m-%dT%H:%M:%S.%fZ')
+            end_date = datetime.datetime.strptime("{}T{}".format(response.json()['cycle']['end_date'],"10:0:0.000Z"), '%Y-%m-%dT%H:%M:%S.%fZ')
             now = datetime.datetime.now()
             delta = end_date - now
             cycle_days, cycle_hours, cycle_minutes = delta.days, delta.seconds // 3600, delta.seconds // 60 % 60
