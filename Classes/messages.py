@@ -27,7 +27,10 @@ class ErrorMessages:
 
 class LoginMessages:
     LOGIN_MESSAGE = 'Please, login using the following link:\n{}&redirect_uri={}/api/auth/intra42?id={}&response_type=code\nThen click the button below'
-    LOGIN_CONFIRMED = 'Login confirmed ✅ Welcome <b>{}</b>! 👋🏻\nYou can now use the bot'
+    LOGIN_CONFIRMED = (
+        'Welcome <b>{}</b>! 👋🏻\n'+
+        'You can now use the bot'
+        )
     LOGIN_FAILED = 'Login failed ❌\nPlease try again'
 
 class HelpMessages:
