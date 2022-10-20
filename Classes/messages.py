@@ -1,4 +1,5 @@
 from http.client import TOO_MANY_REQUESTS
+from sre_constants import SUCCESS
 
 
 class WelcomeMessages:
@@ -44,8 +45,12 @@ class HelpMessages:
 class DeleteMessages:
     DELETE_SUCCESS = 'All your information has been deleted ✅'
     DELETE_FAILED = 'Ups something went wrong, please try again later'
-    DELETE_CONFIRMATION = 'Hi <b>{}</b>, are you sure you want to delete all your information? This action cannot be undone'
+    DELETE_CONFIRMATION = (
+        'Hi <b>{}</b>, are you sure you want to delete all your information? This action cannot be undone\n\n' + \
+        'Status: {}'
+        )
     CONFIRM_DELETE = 'Confirm delete 🗑️'
+    CANCEL_DELETE = 'Cancel delete ❌'
 
 class CycleMessages:
     CYCLE_MESSAGE = (
@@ -61,4 +66,11 @@ class CycleMessages:
         '<b>{}</b> Days <b>{}</b> Hours <b>{}</b> Minutes'
         )
     FETCHING_CYCLE = '🕑 Fetching your cycle stats...'
+    
+class StatusMessages:
+    CONFIRMED = ' ✅ Confirmed'
+    CANCELED = '❌ Cancelled'
+    WAITING_FOR_CONFIRMATION = '⏳ Waiting for confirmation...'
+    ERROR = '❌ Error'
+    SUCCESS = '✅ Success'
     

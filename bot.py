@@ -70,7 +70,21 @@ def query_handler(call):
             fail(call.message, e)
     if call.data == 'CONFIRM_DELETE':
         try:
-            confirm_delete(call.message, bot)
+            res, user_42_login = get_user(call.message.chat.id)
+            if res == 200 and user_42_login is not None:
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.CONFIRMED), chat_id=call.call.message.chat.id, message_id=call.message.id)
+                confirm_delete(call.message, bot, user_42_login)
+            elif res == 404 or (res==200 and user_42_login is None):
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.ERROR), chat_id=call.call.message.chat.id, message_id=call.message.id)
+        except Exception as e:
+            fail(call.message, e)
+    if call.data == 'CANCEL_DELETE':
+        try:
+            res, user_42_login = get_user(call.message.chat.id)
+            if res == 200 and user_42_login is not None:
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.CANCELED), chat_id=call.call.message.chat.id, message_id=call.message.id)
+            elif res == 404 or (res==200 and user_42_login is None):
+                bot.edit_message_text(DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.ERROR), chat_id=call.call.message.chat.id, message_id=call.message.id)
         except Exception as e:
             fail(call.message, e)
 
@@ -100,7 +114,8 @@ def delete(message):
     if res == 200 and user_42_login is not None:
         markup = telebot.types.InlineKeyboardMarkup()
         markup.add(telebot.types.InlineKeyboardButton(text=DeleteMessages.CONFIRM_DELETE, callback_data='CONFIRM_DELETE'))
-        bot.send_message(message.chat.id, DeleteMessages.DELETE_CONFIRMATION.format(user_42_login), reply_markup=markup, parse_mode='HTML')
+        markup.add(telebot.types.InlineKeyboardButton(text=DeleteMessages.CANCEL_DELETE, callback_data='CANCEL_DELETE'))
+        bot.send_message(message.chat.id, DeleteMessages.DELETE_CONFIRMATION.format(user_42_login, StatusMessages.WAITING_FOR_CONFIRMATION), reply_markup=markup, parse_mode='HTML')
     elif res == 404 or (res==200 and user_42_login is None):
         bot.send_message(message.chat.id, ErrorMessages.USER_NOT_FOUND)
     else:
