@@ -1,5 +1,6 @@
 FROM python:3.10.7-alpine3.16
 WORKDIR /bot
+ENV TZ=Europe/Madrid
 
 # Install dependencies
 COPY requirements.txt .
