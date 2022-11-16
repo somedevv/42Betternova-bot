@@ -55,11 +55,11 @@ class CycleMessages:
     CYCLE_MESSAGE = (
         'Hi <b>{}</b>,\n' +
         'your current cycle stats are:\n\n' +
-        'Logged Time:\n' +
+        'Logged Time: {}\n' +
         '<b>{}h {}m {}s</b> of 12h\n\n' +
-        'Events:\n' +
+        'Events: {}\n' +
         '<b>{}</b> of 2\n\n' +
-        'Evaluations:\n' +
+        'Evaluations: {}\n' +
         '<b>{}</b> of 2\n\n' +
         'Time left for current cycle:\n' +
         '<b>{}</b> Days <b>{}</b> Hours <b>{}</b> Minutes'

@@ -19,7 +19,6 @@ bot = telebot.TeleBot(token, use_class_middlewares=True)
 root = logging.getLogger()
 root.setLevel(logging.DEBUG)
 handler = logging.StreamHandler(sys.stdout)
-handler.setLevel(logging.DEBUG)
 formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 handler.setFormatter(formatter)
 root.addHandler(handler)
@@ -142,7 +141,20 @@ def cycle(message):
             now = datetime.datetime.now()
             delta = end_date - now
             cycle_days, cycle_hours, cycle_minutes = delta.days, delta.seconds // 3600, delta.seconds // 60 % 60
-            bot.edit_message_text(CycleMessages.CYCLE_MESSAGE.format(user_42_login, hh, mm, ss, events, evaluations, cycle_days, cycle_hours, cycle_minutes), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
+            bot.edit_message_text(CycleMessages.CYCLE_MESSAGE.format(
+                user_42_login,
+                "✅" if hh >= 12 else "❌", # LOGGED TIME COMPLETION STATUS
+                hh, 
+                mm, 
+                ss,
+                "✅" if events >= 2 else "❌", # EVENTS COMPLETION STATUS 
+                events, 
+                "✅" if evaluations >= 2 else "❌", # EVALUATIONS COMPLETION STATUS 
+                evaluations, 
+                cycle_days, 
+                cycle_hours, 
+                cycle_minutes
+                ), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
         else:
             bot.edit_message_text(ErrorMessages.CYCLE_ERROR.format(user_42_login), message_id=msg.message_id, chat_id=msg.chat.id, parse_mode='HTML')
     elif res == 404 or (res==200 and user_42_login is None):
