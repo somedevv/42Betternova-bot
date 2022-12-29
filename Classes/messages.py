@@ -24,6 +24,8 @@ class ErrorMessages:
         'To keep costs low, and for 42API reasons, fetching is limited to 1 request per 5 minutes.\n' +
         'Please <b>wait {} minutes and {} seconds</b> before sending a request again ❤️.'
     )
+    USER_FREEZE_STATUS = 'Hi <b>{}</b>, you are currently in freeze status, you can\'t use the bot until you are unfrozen'
+    BOT_FREEZE_STATUS = 'Hi <b>{}</b>, im currently in freeze status, you can\'t use the bot until i am unfrozen 🥶'
 
 class LoginMessages:
     LOGIN_MESSAGE = 'Please, login using the following link:\n{}&redirect_uri={}/api/auth/intra42?id={}&response_type=code\nThen click the button below'

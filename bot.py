@@ -29,6 +29,10 @@ timeout_funcs = os.environ['TIMEOUT_FUNCTIONS'].split(',') # list of functions t
 no_timeout_users = [ eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',') ] # list of users that should not be affected by the timeout separated by comma
 #####################################################
 
+####### OTHER SETTINGS CONFIGURATION #######
+BOT_FREEZE_STATUS = os.environ['FREEZE_STATUS'] # 0 = bot is active, 1 = bot is frozen
+############################################
+
 ####### MIDDLEWARES CONFIG #######
 class SimpleMiddleware(BaseMiddleware):
     def __init__(self, limit) -> None:
@@ -37,6 +41,10 @@ class SimpleMiddleware(BaseMiddleware):
         self.update_types = ['message']
 
     def pre_process(self, message, data):
+        if BOT_FREEZE_STATUS == 1:
+            user = get_user(message.chat.id)
+            bot.send_message(message.chat.id, ErrorMessages.BOT_FREEZE_STATUS.format(user), parse_mode='HTML')
+            return CancelUpdate()
         if message.text in timeout_funcs and message.from_user.id not in no_timeout_users:
             if message.from_user.id in self.last_time and message.date - self.last_time[message.from_user.id] < self.limit:
                 bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
