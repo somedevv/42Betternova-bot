@@ -30,7 +30,7 @@ no_timeout_users = [ eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split('
 #####################################################
 
 ####### OTHER SETTINGS CONFIGURATION #######
-BOT_FREEZE_STATUS = os.environ['FREEZE_STATUS'] # 0 = bot is active, 1 = bot is frozen
+BOT_FREEZE_STATUS = int(os.environ['FREEZE_STATUS']) # 0 = bot is active, 1 = bot is frozen
 ############################################
 
 ####### MIDDLEWARES CONFIG #######
