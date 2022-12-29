@@ -42,9 +42,12 @@ class SimpleMiddleware(BaseMiddleware):
 
     def pre_process(self, message, data):
         if BOT_FREEZE_STATUS == 1:
-            user = get_user(message.chat.id)
-            bot.send_message(message.chat.id, ErrorMessages.BOT_FREEZE_STATUS.format(user), parse_mode='HTML')
+            res, user_42_login = get_user(message.chat.id)
+            if res == 404 or (res==200 and user_42_login is None):
+                user_42_login = 'anon'
+            bot.send_message(message.chat.id, ErrorMessages.BOT_FREEZE_STATUS.format(user_42_login), parse_mode='HTML')
             return CancelUpdate()
+
         if message.text in timeout_funcs and message.from_user.id not in no_timeout_users:
             if message.from_user.id in self.last_time and message.date - self.last_time[message.from_user.id] < self.limit:
                 bot.send_message(message.chat.id, ErrorMessages.TOO_MANY_REQUESTS.format(int((self.limit - (message.date - self.last_time[message.from_user.id])) / 60), int((self.limit - (message.date - self.last_time[message.from_user.id])) % 60)), parse_mode='HTML')
