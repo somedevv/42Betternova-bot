@@ -52,17 +52,17 @@ TELEGRAM_TOKEN=
 
 ## The bot configuration
 
-The bot has some configuration variables that can be set as **container ENV variables**:
+Appart from the obligatory env variables, the bot has some other configuration variables that can be set:
 
 ```
 // The chat commands to add a timeout to, followed by a comma (,) without spaces.
-TIMEOUT_FUNCTIONS=/start,/help,...
+TIMEOUT_FUNCTIONS
 
 // The Telegram IDs of the users that can Bypass the timeouts, followed by a comma (,) without spaces.
-BYPASS_TIMEOUT_USERS=XXXXXXXX,XXXXXXXX,...
+BYPASS_TIMEOUT_USERS
 
 // Boolean to enable or disable the bot, 1 for disable, 0 for enable
-FREEZE_STATUS=
+FREEZE_STATUS
 
 // Boolean to enable or disable the bot to accept new users, 1 for disable, 0 for enable
 DISABLE_NEW_USERS
