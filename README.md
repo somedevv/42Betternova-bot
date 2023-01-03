@@ -41,13 +41,13 @@ Then deploy the bot with the following **container ENV variables**:
 
 ```
 // The token set as Authentication Bearer to authenticate with your API
-API_TOKEN=
+API_TOKEN
 
 // The base URL of your API
-API_BASE_URL=https://something.com/api/
+API_BASE_URL
 
 // The Telegram Token for the bot
-TELEGRAM_TOKEN=
+TELEGRAM_TOKEN
 ```
 
 ## The bot configuration
