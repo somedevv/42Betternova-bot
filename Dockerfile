@@ -1,4 +1,4 @@
-FROM python:3.10.8-alpine3.16
+FROM python:3.11.1-slim-bullseye
 WORKDIR /bot
 ENV TZ=Europe/Madrid
 
