@@ -26,6 +26,7 @@ class ErrorMessages:
     )
     USER_FREEZE_STATUS = 'Hi <b>{}</b>, you are currently in freeze status, you can\'t use the bot until you are unfrozen'
     BOT_FREEZE_STATUS = 'Hi <b>{}</b>, I\'m currently in freeze status, you can\'t use the bot until I\'m unfrozen 🥶'
+    DISABLE_NEW_USERS = 'Hi, I\'m currently not accepting new users 😔, please try again later or contact my creator'
 
 class LoginMessages:
     LOGIN_MESSAGE = 'Please, login using the following link:\n{}&redirect_uri={}/api/auth/intra42?id={}&response_type=code\nThen click the button below'

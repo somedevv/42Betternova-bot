@@ -24,13 +24,26 @@ handler.setFormatter(formatter)
 root.addHandler(handler)
 ###############################################
 
-####### MIDDLEWARE TOO MANY REQUEST EXCLUSION #######
-timeout_funcs = os.environ['TIMEOUT_FUNCTIONS'].split(',') # list of functions that should not be affected by the timeout separated by comma
-no_timeout_users = [ eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',') ] # list of users that should not be affected by the timeout separated by comma
-#####################################################
+####### OTHER OPTIONAL SETTINGS CONFIGURATION #######
+if 'BOT_FREEZE_STATUS' in os.environ:
+    BOT_FREEZE_STATUS = int(os.environ['BOT_FREEZE_STATUS'])  # 0 = bot is active, 1 = bot is frozen
+else:
+    BOT_FREEZE_STATUS = 0
 
-####### OTHER SETTINGS CONFIGURATION #######
-BOT_FREEZE_STATUS = int(os.environ['FREEZE_STATUS']) # 0 = bot is active, 1 = bot is frozen
+if 'TIMEOUT_FUNCTIONS' in os.environ:
+    timeout_funcs = os.environ['TIMEOUT_FUNCTIONS'].split(',') # list of functions that should not be affected by the timeout separated by comma
+else:
+    timeout_funcs = []
+
+if 'BYPASS_TIMEOUT_USERS' in os.environ:
+    no_timeout_users = [ eval(i) for i in os.environ['BYPASS_TIMEOUT_USERS'].split(',') ] # list of users that should not be affected by the timeout separated by comma
+else:
+    no_timeout_users = []
+    
+if 'DISABLE_NEW_USERS' in os.environ:
+    DISABLE_NEW_USERS = int(os.environ['DISABLE_NEW_USERS']) # 0 = new users can register, 1 = new users cannot register
+else:
+    DISABLE_NEW_USERS = 0
 ############################################
 
 ####### MIDDLEWARES CONFIG #######
@@ -41,6 +54,12 @@ class SimpleMiddleware(BaseMiddleware):
         self.update_types = ['message']
 
     def pre_process(self, message, data):
+        if DISABLE_NEW_USERS == 1 and message.text == '/start':
+            res, user_42_login = get_user(message.chat.id)
+            if res == 404 or (res==200 and user_42_login is None):
+                bot.send_message(message.chat.id, ErrorMessages.DISABLE_NEW_USERS, parse_mode='HTML')
+                return CancelUpdate()
+                
         if BOT_FREEZE_STATUS == 1:
             res, user_42_login = get_user(message.chat.id)
             if res == 404 or (res==200 and user_42_login is None):
